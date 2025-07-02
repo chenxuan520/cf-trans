@@ -13,21 +13,23 @@ export default {
   async fetch(request, env) {
     const urlStr = request.url;  
     const urlObj = new URL(urlStr);
-    if (urlObj.pathname == '/'){
-      // redirect to index.html for HTML requests
-    return new Response(HTML, {
-      status: 200,
-      headers: {
-        ...corsHeaders,
-        "content-type": "text/html"
-      }
-    });
-  }
+
     let text = urlObj.searchParams.get('text');  
     let source_language = urlObj.searchParams.get('source_language');  
     let target_language = urlObj.searchParams.get('target_language');  
     let secret = urlObj.searchParams.get('secret');  
   
+    if (urlObj.pathname == '/' && text === null){
+      // redirect to index.html for HTML requests
+      return new Response(HTML, {
+        status: 200,
+        headers: {
+          ...corsHeaders,
+          "content-type": "text/html"
+        }
+      });
+    }
+    console.log(text);
     // 检查secret  
     if (secret !== SECRET_PASS) {  
       // 返回包含CORS头部的错误响应  

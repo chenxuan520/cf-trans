@@ -853,14 +853,14 @@
                 
                 const source = sourceLanguage.value;
                 const target = targetLanguage.value;
-                const secret = '123456'; // 应该通过后端获取，此处只作为示例
+                const secret = '114514'; // 应该通过后端获取，此处只作为示例
                 
                 // 显示加载动画
                 loadingSpinner.style.display = 'inline-block';
                 translateBtn.querySelector('span').textContent = '翻译中...';
                 translateBtn.querySelector('i').style.display = 'none';
                 
-                fetch(`https://translateapi.011102.xyz/?text=${encodeURIComponent(text)}&source_language=${source}&target_language=${target}&secret=${secret}`)
+                fetch(`https://trans.011203.xyz/?text=${encodeURIComponent(text)}&source_language=${source}&target_language=${target}&secret=${secret}`)
                     .then(response => response.json())
                     .then(data => {
                         // 隐藏加载动画
