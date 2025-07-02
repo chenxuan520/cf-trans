@@ -6,18 +6,19 @@
     <meta name="description" content="免费翻译,在线翻译,翻译,translate,AI,大模型,人工智能,语音识别">
     <title>翻译 | 多语言在线翻译平台</title>
     <meta name="msvalidate.01" content="C6B7DCA920BD89C3122D6D27F520FDFD" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4a6cf7;
-            --secondary-color: #8a6df2;
-            --background-color: #f8f9fa;
-            --text-color: #2d3748;
-            --light-text: #718096;
-            --border-color: #e2e8f0;
-            --shadow-color: rgba(0, 0, 0, 0.08);
-            --success-color: #38b2ac;
-            --card-bg: #ffffff;
+            --primary-color: #1F6FEB;
+            --secondary-color: #6E40C9;
+            --background-color: #0D1117;
+            --text-color: #C9D1D9;
+            --light-text: #8B949E;
+            --border-color: #30363D;
+            --shadow-color: rgba(17, 24, 39, 0.4);
+            --success-color: #3FB950;
+            --card-bg: #161B22;
+            --input-bg: #0D1117;
+            --github-green: #2ea44f; /* 添加 GitHub 绿色变量 */
         }
 
         * {
@@ -28,7 +29,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
@@ -73,6 +74,7 @@
             box-shadow: 0 10px 30px var(--shadow-color);
             overflow: hidden;
             margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
         }
 
         .languages-bar {
@@ -80,7 +82,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 1.2rem;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.03);
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -94,6 +96,7 @@
             display: flex;
             align-items: center;
             position: relative;
+            width: 100%;
         }
 
         .lang-icon {
@@ -105,9 +108,9 @@
 
         select {
             appearance: none;
-            background-color: transparent;
-            border: none;
-            padding: 0.5rem 0.5rem 0.5rem 2rem;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 0.75rem 0.75rem 2.5rem;
             font-size: 1rem;
             color: var(--text-color);
             font-weight: 500;
@@ -115,32 +118,34 @@
             margin-right: 0.5rem;
             border-radius: 8px;
             transition: background-color 0.3s;
+            width: 100%;
         }
 
         select:hover, select:focus {
-            background-color: rgba(0, 0, 0, 0.05);
+            background-color: rgba(255, 255, 255, 0.05);
             outline: none;
+            border-color: var(--primary-color);
         }
 
         .swap-btn {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 36px;
-            height: 36px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background-color: var(--primary-color);
+            background-color: var(--github-green); /* 修改按钮背景颜色 */
             color: white;
             border: none;
             cursor: pointer;
             margin: 0 1rem;
             transform: translateY(0);
-            box-shadow: 0 4px 8px rgba(74, 108, 247, 0.3);
+            box-shadow: 0 4px 8px rgba(46, 164, 79, 0.3); /* 修改阴影颜色 */
         }
 
         .swap-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(74, 108, 247, 0.4);
+            box-shadow: 0 6px 12px rgba(46, 164, 79, 0.4); /* 修改阴影颜色 */
         }
 
         .swap-btn:active {
@@ -191,7 +196,7 @@
 
         .text-action-btn:hover {
             color: var(--primary-color);
-            background-color: rgba(0, 0, 0, 0.05);
+            background-color: rgba(255, 255, 255, 0.05);
         }
 
         textarea {
@@ -204,18 +209,18 @@
             font-family: inherit;
             font-size: 1rem;
             color: var(--text-color);
-            background-color: white;
+            background-color: var(--input-bg);
             transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+            box-shadow: 0 0 0 2px rgba(31, 111, 235, 0.2);
         }
 
         #outputText {
-            background-color: rgba(0, 0, 0, 0.01);
+            background-color: rgba(255, 255, 255, 0.03);
         }
 
         .translate-btn {
@@ -231,7 +236,7 @@
             margin: 1rem auto;
             cursor: pointer;
             font-size: 1rem;
-            box-shadow: 0 6px 12px rgba(74, 108, 247, 0.2);
+            box-shadow: 0 6px 12px rgba(31, 111, 235, 0.2);
             min-width: 160px;
             gap: 0.5rem;
             transition: transform 0.3s, box-shadow 0.3s;
@@ -239,7 +244,7 @@
 
         .translate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(74, 108, 247, 0.3);
+            box-shadow: 0 8px 16px rgba(31, 111, 235, 0.3);
         }
 
         .translate-btn:active {
@@ -259,6 +264,7 @@
             padding: 1.5rem;
             box-shadow: 0 4px 12px var(--shadow-color);
             text-align: center;
+            border: 1px solid var(--border-color);
         }
 
         .feature-icon {
@@ -375,17 +381,17 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
@@ -529,11 +535,13 @@
                             <option value="zu">祖鲁语</option>
                         </select>
                     </div>
+                </div>
 
-                    <button id="swapBtn" class="swap-btn" title="交换语言">
-                        <i class="fas fa-exchange-alt"></i>
-                    </button>
+                <button id="swapBtn" class="swap-btn" title="交换语言">
+                    <span>⇄</span> <!-- 添加双箭头 -->
+                </button>
 
+                <div class="language-select-wrapper">
                     <div>
                         <i class="fas fa-globe lang-icon"></i>
                         <select id="targetLanguage">
@@ -701,11 +709,17 @@
                 </div>
             </div>
 
-            <button id="translateBtn" class="translate-btn">
-                <span>翻译</span>
-                <div class="loading-spinner" id="loadingSpinner"></div>
-                <i class="fas fa-arrow-right"></i>
-            </button>
+            <div style="display: flex; justify-content: center; gap: 1rem;">
+                <button id="translateBtn" class="translate-btn">
+                    <span>翻译</span>
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <button id="copyResultBtn" class="translate-btn">
+                    <i class="fas fa-copy"></i>
+                    <span>复制结果</span>
+                </button>
+            </div>
         </div>
 
         <div class="features">
@@ -755,6 +769,7 @@
             const inputCount = document.getElementById('inputCount');
             const outputCount = document.getElementById('outputCount');
             const loadingSpinner = document.getElementById('loadingSpinner');
+            const copyResultBtn = document.getElementById('copyResultBtn');
 
             // 字符计数
             inputText.addEventListener('input', function() {
@@ -893,6 +908,22 @@
                     });
             }
 
+            // 新添加的复制结果按钮点击事件
+            copyResultBtn.addEventListener('click', async function() {
+                if (outputText.value) {
+                    try {
+                        await navigator.clipboard.writeText(outputText.value);
+                        // 视觉反馈
+                        copyResultBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                        setTimeout(() => {
+                            copyResultBtn.innerHTML = '<i class="fas fa-copy"></i> 复制结果';
+                        }, 2000);
+                    } catch (err) {
+                        alert('复制失败，请手动复制文本。');
+                    }
+                }
+            });
+
             // 设置默认语言
             // 基于浏览器语言自动设置源语言
             const browserLang = navigator.language.split('-')[0];
@@ -909,3 +940,5 @@
             }
         });
     </script>
+</html>
+
