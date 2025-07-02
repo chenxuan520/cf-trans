@@ -4,5 +4,8 @@
 	"assets": {
 		"directory": "."
 	},
+	"ai": {
+		"binding": "AI"
+	},
 	"main": "work.js"
 }
