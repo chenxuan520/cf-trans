@@ -1,0 +1,8 @@
+{
+	"name": "trans",
+	"compatibility_date": "2025-07-02",
+	"assets": {
+		"directory": "."
+	},
+	"main": "work.js"
+}
