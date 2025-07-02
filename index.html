@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="description" content="免费翻译,在线翻译,翻译,translate,AI,大模型,人工智能,语音识别">
+    <title>翻译 | 多语言在线翻译平台</title>
+    <meta name="msvalidate.01" content="C6B7DCA920BD89C3122D6D27F520FDFD" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #8a6df2;
+            --background-color: #f8f9fa;
+            --text-color: #2d3748;
+            --light-text: #718096;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --success-color: #38b2ac;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1.5rem 0;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .translator-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .languages-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .language-select-wrapper {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .language-select-wrapper > div {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .lang-icon {
+            position: absolute;
+            left: 10px;
+            color: var(--light-text);
+            pointer-events: none;
+        }
+
+        select {
+            appearance: none;
+            background-color: transparent;
+            border: none;
+            padding: 0.5rem 0.5rem 0.5rem 2rem;
+            font-size: 1rem;
+            color: var(--text-color);
+            font-weight: 500;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        select:hover, select:focus {
+            background-color: rgba(0, 0, 0, 0.05);
+            outline: none;
+        }
+
+        .swap-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 0 1rem;
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(74, 108, 247, 0.3);
+        }
+
+        .swap-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(74, 108, 247, 0.4);
+        }
+
+        .swap-btn:active {
+            transform: translateY(0);
+        }
+
+        .text-areas {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .text-areas {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .text-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .text-box-label {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .text-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .text-action-btn {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem;
+            border-radius: 4px;
+        }
+
+        .text-action-btn:hover {
+            color: var(--primary-color);
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            resize: none;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--text-color);
+            background-color: white;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+        }
+
+        #outputText {
+            background-color: rgba(0, 0, 0, 0.01);
+        }
+
+        .translate-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            margin: 1rem auto;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 6px 12px rgba(74, 108, 247, 0.2);
+            min-width: 160px;
+            gap: 0.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .translate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(74, 108, 247, 0.3);
+        }
+
+        .translate-btn:active {
+            transform: translateY(0);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            text-align: center;
+        }
+
+        .feature-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .feature-desc {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer p {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        /* Loading animation */
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .translator-card {
+            animation: slideUp 0.5s ease-out forwards;
+        }
+
+        .feature-card {
+            animation: fadeIn 0.5s ease-out forwards;
+            animation-delay: calc(var(--i) * 0.1s);
+            opacity: 0;
+        }
+
+        /* Character count */
+        .char-count {
+            font-size: 0.75rem;
+            color: var(--light-text);
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .languages-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .language-select-wrapper {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .swap-btn {
+                transform: rotate(90deg);
+                margin: 0.5rem 0;
+            }
+
+            .text-areas {
+                grid-template-columns: 1fr;
+            }
+
+            textarea {
+                height: 150px;
+            }
+        }
+
+        /* Modern scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>翻译</h1>
+        <p>支持100+种语言，高质量的在线翻译体验</p>
+    </div>
+
+    <div class="container">
+        <div class="translator-card">
+            <div class="languages-bar">
+                <div class="language-select-wrapper">
+                    <div>
+                        <i class="fas fa-globe lang-icon"></i>
+                        <select id="sourceLanguage">
+                            <option value="zh">中文</option>
+                            <option value="en">英语</option>
+                            <!-- A 开头的语言 -->
+                            <option value="af">阿非利卡语</option>
+                            <option value="am">阿姆哈拉语</option>
+                            <option value="ar">阿拉伯语</option>
+                            <option value="ast">阿斯图里亚斯语</option>
+                            <option value="az">阿塞拜疆语</option>
+                            <!-- B 开头的语言 -->
+                            <option value="ba">巴什基尔语</option>
+                            <option value="be">白俄罗斯语</option>
+                            <option value="bg">保加利亚语</option>
+                            <option value="bn">孟加拉语</option>
+                            <option value="br">布列塔尼语</option>
+                            <option value="bs">波斯尼亚语</option>
+                            <!-- C 开头的语言 -->
+                            <option value="ca">加泰罗尼亚语</option>
+                            <option value="ceb">宿务语</option>
+                            <option value="cs">捷克语</option>
+                            <option value="cy">威尔士语</option>
+                            <!-- D 开头的语言 -->
+                            <option value="da">丹麦语</option>
+                            <option value="de">德语</option>
+                            <!-- E 开头的语言 -->
+                            <option value="el">希腊语</option>
+                            <option value="es">西班牙语</option>
+                            <option value="et">爱沙尼亚语</option>
+                            <!-- F 开头的语言 -->
+                            <option value="fa">波斯语</option>
+                            <option value="ff">富拉语</option>
+                            <option value="fi">芬兰语</option>
+                            <option value="fr">法语</option>
+                            <option value="fy">西弗里西亚语</option>
+                            <!-- G 开头的语言 -->
+                            <option value="ga">爱尔兰语</option>
+                            <option value="gd">苏格兰盖尔语</option>
+                            <option value="gl">加利西亚语</option>
+                            <option value="gu">古吉拉特语</option>
+                            <!-- H 开头的语言 -->
+                            <option value="ha">豪萨语</option>
+                            <option value="he">希伯来语</option>
+                            <option value="hi">印地语</option>
+                            <option value="hr">克罗地亚语</option>
+                            <option value="ht">海地克里奥尔语</option>
+                            <option value="hu">匈牙利语</option>
+                            <!-- I 开头的语言 -->
+                            <option value="hy">亚美尼亚语</option>
+                            <option value="id">印度尼西亚语</option>
+                            <option value="ig">伊博语</option>
+                            <option value="ilo">伊洛卡诺语</option>
+                            <option value="is">冰岛语</option>
+                            <option value="it">意大利语</option>
+                            <!-- J 开头的语言 -->
+                            <option value="ja">日语</option>
+                            <option value="jv">爪哇语</option>
+                            <!-- K 开头的语言 -->
+                            <option value="ka">格鲁吉亚语</option>
+                            <option value="kk">哈萨克语</option>
+                            <option value="km">中央高棉语</option>
+                            <option value="kn">卡纳达语</option>
+                            <option value="ko">韩语</option>
+                            <!-- L 开头的语言 -->
+                            <option value="lb">卢森堡语</option>
+                            <option value="lg">甘达语</option>
+                            <option value="ln">林加拉语</option>
+                            <option value="lo">老挝语</option>
+                            <option value="lt">立陶宛语</option>
+                            <option value="lv">拉脱维亚语</option>
+                            <!-- M 开头的语言 -->
+                            <option value="mg">马达加斯加语</option>
+                            <option value="mk">马其顿语</option>
+                            <option value="ml">马拉雅拉姆语</option>
+                            <option value="mn">蒙古语</option>
+                            <option value="mr">马拉地语</option>
+                            <option value="ms">马来语</option>
+                            <option value="my">缅甸语</option>
+                            <!-- N 开头的语言 -->
+                            <option value="ne">尼泊尔语</option>
+                            <option value="nl">荷兰语</option>
+                            <option value="no">挪威语</option>
+                            <option value="ns">北索托语</option>
+                            <option value="or">奥里亚语</option>
+                            <option value="pa">旁遮普语</option>
+                            <option value="pl">波兰语</option>
+                            <option value="ps">普什图语</option>
+                            <!-- O 开头的语言 -->
+                            <option value="oc">奥克西塔尼语</option>
+                            <!-- P 开头的语言 -->
+                            <option value="pt">葡萄牙语</option>
+                            <option value="ro">罗马尼亚语</option>
+                            <!-- R 开头的语言 -->
+                            <option value="ru">俄语</option>
+                            <!-- S 开头的语言 -->
+                            <option value="sd">信德语</option>
+                            <option value="si">僧伽罗语</option>
+                            <option value="sk">斯洛伐克语</option>
+                            <option value="sl">斯洛文尼亚语</option>
+                            <option value="so">索马里语</option>
+                            <option value="sq">阿尔巴尼亚语</option>
+                            <option value="sr">塞尔维亚语</option>
+                            <option value="ss">斯瓦蒂语</option>
+                            <option value="su">巽他语</option>
+                            <option value="sv">瑞典语</option>
+                            <option value="sw">斯瓦希里语</option>
+                            <!-- T 开头的语言 -->
+                            <option value="ta">泰米尔语</option>
+                            <option value="th">泰语</option>
+                            <option value="tl">他加禄语</option>
+                            <option value="tn">茨瓦纳语</option>
+                            <option value="tr">土耳其语</option>
+                            <!-- U 开头的语言 -->
+                            <option value="uk">乌克兰语</option>
+                            <option value="ur">乌尔都语</option>
+                            <option value="uz">乌兹别克语</option>
+                            <!-- V 开头的语言 -->
+                            <option value="vi">越南语</option>
+                            <!-- W 开头的语言 -->
+                            <option value="wo">沃洛夫语</option>
+                            <!-- X 开头的语言 -->
+                            <option value="xh">科萨语</option>
+                            <!-- Y 开头的语言 -->
+                            <option value="yi">依地语</option>
+                            <option value="yo">约鲁巴语</option>
+                            <!-- Z 开头的语言 -->
+                            <option value="zu">祖鲁语</option>
+                        </select>
+                    </div>
+
+                    <button id="swapBtn" class="swap-btn" title="交换语言">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+
+                    <div>
+                        <i class="fas fa-globe lang-icon"></i>
+                        <select id="targetLanguage">
+                            <option value="en">英语</option>
+                            <option value="zh">中文</option>
+                            <!-- A 开头的语言 -->
+                            <option value="af">阿非利卡语</option>
+                            <option value="am">阿姆哈拉语</option>
+                            <option value="ar">阿拉伯语</option>
+                            <option value="ast">阿斯图里亚斯语</option>
+                            <option value="az">阿塞拜疆语</option>
+                            <!-- B 开头的语言 -->
+                            <option value="ba">巴什基尔语</option>
+                            <option value="be">白俄罗斯语</option>
+                            <option value="bg">保加利亚语</option>
+                            <option value="bn">孟加拉语</option>
+                            <option value="br">布列塔尼语</option>
+                            <option value="bs">波斯尼亚语</option>
+                            <!-- C 开头的语言 -->
+                            <option value="ca">加泰罗尼亚语</option>
+                            <option value="ceb">宿务语</option>
+                            <option value="cs">捷克语</option>
+                            <option value="cy">威尔士语</option>
+                            <!-- D 开头的语言 -->
+                            <option value="da">丹麦语</option>
+                            <option value="de">德语</option>
+                            <!-- E 开头的语言 -->
+                            <option value="el">希腊语</option>
+                            <option value="es">西班牙语</option>
+                            <option value="et">爱沙尼亚语</option>
+                            <!-- F 开头的语言 -->
+                            <option value="fa">波斯语</option>
+                            <option value="ff">富拉语</option>
+                            <option value="fi">芬兰语</option>
+                            <option value="fr">法语</option>
+                            <option value="fy">西弗里西亚语</option>
+                            <!-- G 开头的语言 -->
+                            <option value="ga">爱尔兰语</option>
+                            <option value="gd">苏格兰盖尔语</option>
+                            <option value="gl">加利西亚语</option>
+                            <option value="gu">古吉拉特语</option>
+                            <!-- H 开头的语言 -->
+                            <option value="ha">豪萨语</option>
+                            <option value="he">希伯来语</option>
+                            <option value="hi">印地语</option>
+                            <option value="hr">克罗地亚语</option>
+                            <option value="ht">海地克里奥尔语</option>
+                            <option value="hu">匈牙利语</option>
+                            <!-- I 开头的语言 -->
+                            <option value="hy">亚美尼亚语</option>
+                            <option value="id">印度尼西亚语</option>
+                            <option value="ig">伊博语</option>
+                            <option value="ilo">伊洛卡诺语</option>
+                            <option value="is">冰岛语</option>
+                            <option value="it">意大利语</option>
+                            <!-- J 开头的语言 -->
+                            <option value="ja">日语</option>
+                            <option value="jv">爪哇语</option>
+                            <!-- K 开头的语言 -->
+                            <option value="ka">格鲁吉亚语</option>
+                            <option value="kk">哈萨克语</option>
+                            <option value="km">中央高棉语</option>
+                            <option value="kn">卡纳达语</option>
+                            <option value="ko">韩语</option>
+                            <!-- L 开头的语言 -->
+                            <option value="lb">卢森堡语</option>
+                            <option value="lg">甘达语</option>
+                            <option value="ln">林加拉语</option>
+                            <option value="lo">老挝语</option>
+                            <option value="lt">立陶宛语</option>
+                            <option value="lv">拉脱维亚语</option>
+                            <!-- M 开头的语言 -->
+                            <option value="mg">马达加斯加语</option>
+                            <option value="mk">马其顿语</option>
+                            <option value="ml">马拉雅拉姆语</option>
+                            <option value="mn">蒙古语</option>
+                            <option value="mr">马拉地语</option>
+                            <option value="ms">马来语</option>
+                            <option value="my">缅甸语</option>
+                            <!-- N 开头的语言 -->
+                            <option value="ne">尼泊尔语</option>
+                            <option value="nl">荷兰语</option>
+                            <option value="no">挪威语</option>
+                            <option value="ns">北索托语</option>
+                            <option value="or">奥里亚语</option>
+                            <option value="pa">旁遮普语</option>
+                            <option value="pl">波兰语</option>
+                            <option value="ps">普什图语</option>
+                            <!-- O 开头的语言 -->
+                            <option value="oc">奥克西塔尼语</option>
+                            <!-- P 开头的语言 -->
+                            <option value="pt">葡萄牙语</option>
+                            <option value="ro">罗马尼亚语</option>
+                            <!-- R 开头的语言 -->
+                            <option value="ru">俄语</option>
+                            <!-- S 开头的语言 -->
+                            <option value="sd">信德语</option>
+                            <option value="si">僧伽罗语</option>
+                            <option value="sk">斯洛伐克语</option>
+                            <option value="sl">斯洛文尼亚语</option>
+                            <option value="so">索马里语</option>
+                            <option value="sq">阿尔巴尼亚语</option>
+                            <option value="sr">塞尔维亚语</option>
+                            <option value="ss">斯瓦蒂语</option>
+                            <option value="su">巽他语</option>
+                            <option value="sv">瑞典语</option>
+                            <option value="sw">斯瓦希里语</option>
+                            <!-- T 开头的语言 -->
+                            <option value="ta">泰米尔语</option>
+                            <option value="th">泰语</option>
+                            <option value="tl">他加禄语</option>
+                            <option value="tn">茨瓦纳语</option>
+                            <option value="tr">土耳其语</option>
+                            <!-- U 开头的语言 -->
+                            <option value="uk">乌克兰语</option>
+                            <option value="ur">乌尔都语</option>
+                            <option value="uz">乌兹别克语</option>
+                            <!-- V 开头的语言 -->
+                            <option value="vi">越南语</option>
+                            <!-- W 开头的语言 -->
+                            <option value="wo">沃洛夫语</option>
+                            <!-- X 开头的语言 -->
+                            <option value="xh">科萨语</option>
+                            <!-- Y 开头的语言 -->
+                            <option value="yi">依地语</option>
+                            <option value="yo">约鲁巴语</option>
+                            <!-- Z 开头的语言 -->
+                            <option value="zu">祖鲁语</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-areas">
+                <div class="text-box">
+                    <div class="text-box-label">
+                        <span>输入文本</span>
+                        <div class="text-actions">
+                            <button class="text-action-btn" id="clearInput" title="清除">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <button class="text-action-btn" id="pasteBtn" title="粘贴">
+                                <i class="fas fa-paste"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="inputText" placeholder="在此输入要翻译的文本..."></textarea>
+                    <div id="inputCount" class="char-count">0/5000</div>
+                </div>
+
+                <div class="text-box">
+                    <div class="text-box-label">
+                        <span>翻译结果</span>
+                        <div class="text-actions">
+                            <button class="text-action-btn" id="copyBtn" title="复制">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="text-action-btn" id="listenBtn" title="朗读">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="outputText" readonly placeholder="翻译结果将在这里显示..."></textarea>
+                    <div id="outputCount" class="char-count">0 字符</div>
+                </div>
+            </div>
+
+            <button id="translateBtn" class="translate-btn">
+                <span>翻译</span>
+                <div class="loading-spinner" id="loadingSpinner"></div>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="features">
+            <div class="feature-card" style="--i:1">
+                <div class="feature-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3 class="feature-title">100+ 语言支持</h3>
+                <p class="feature-desc">支持世界上主要语言的翻译，让沟通无国界</p>
+            </div>
+
+            <div class="feature-card" style="--i:2">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="feature-title">AI 驱动</h3>
+                <p class="feature-desc">采用先进人工智能技术，确保高质量、自然的翻译效果</p>
+            </div>
+
+            <div class="feature-card" style="--i:3">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="feature-title">即时翻译</h3>
+                <p class="feature-desc">快速响应，实时翻译，效率至上</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2025 翻译 | 多语言在线翻译平台</p>
+    </footer>
+
+    <script>
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputText = document.getElementById('inputText');
+            const outputText = document.getElementById('outputText');
+            const translateBtn = document.getElementById('translateBtn');
+            const sourceLanguage = document.getElementById('sourceLanguage');
+            const targetLanguage = document.getElementById('targetLanguage');
+            const swapBtn = document.getElementById('swapBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const clearBtn = document.getElementById('clearInput');
+            const pasteBtn = document.getElementById('pasteBtn');
+            const listenBtn = document.getElementById('listenBtn');
+            const inputCount = document.getElementById('inputCount');
+            const outputCount = document.getElementById('outputCount');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            // 字符计数
+            inputText.addEventListener('input', function() {
+                const length = this.value.length;
+                inputCount.textContent = `${length}/5000`;
+                // 超过5000个字符时高亮显示
+                if (length > 5000) {
+                    inputCount.style.color = '#e53e3e';
+                } else {
+                    inputCount.style.color = 'var(--light-text)';
+                }
+            });
+
+            // 清除输入
+            clearBtn.addEventListener('click', function() {
+                inputText.value = '';
+                inputCount.textContent = '0/5000';
+                outputText.value = '';
+                outputCount.textContent = '0 字符';
+            });
+
+            // 粘贴
+            pasteBtn.addEventListener('click', async function() {
+                try {
+                    const text = await navigator.clipboard.readText();
+                    inputText.value = text;
+                    inputText.dispatchEvent(new Event('input'));
+                } catch (err) {
+                    alert('无法访问剪贴板，请手动粘贴文本。');
+                }
+            });
+
+            // 复制结果
+            copyBtn.addEventListener('click', async function() {
+                if (outputText.value) {
+                    try {
+                        await navigator.clipboard.writeText(outputText.value);
+                        // 视觉反馈
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                        }, 2000);
+                    } catch (err) {
+                        alert('复制失败，请手动复制文本。');
+                    }
+                }
+            });
+
+            // 语音朗读
+            listenBtn.addEventListener('click', function() {
+                if (outputText.value && 'speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(outputText.value);
+                    utterance.lang = targetLanguage.value;
+                    speechSynthesis.speak(utterance);
+                }
+            });
+
+            // 交换语言
+            swapBtn.addEventListener('click', function() {
+                const tempLang = sourceLanguage.value;
+                sourceLanguage.value = targetLanguage.value;
+                targetLanguage.value = tempLang;
+                
+                // 如果已经有翻译结果，也交换文本
+                if (outputText.value) {
+                    const tempText = inputText.value;
+                    inputText.value = outputText.value;
+                    outputText.value = tempText;
+                    
+                    // 更新字符计数
+                    inputText.dispatchEvent(new Event('input'));
+                    const outLength = outputText.value.length;
+                    outputCount.textContent = `${outLength} 字符`;
+                }
+            });
+
+            // 翻译功能
+            translateBtn.addEventListener('click', function() {
+                translateText();
+            });
+
+            // 在文本框中按Enter键也可以翻译
+            inputText.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    translateText();
+                }
+            });
+
+            // 翻译函数
+            function translateText() {
+                const text = inputText.value.trim();
+                if (!text) {
+                    return;
+                }
+                
+                const source = sourceLanguage.value;
+                const target = targetLanguage.value;
+                const secret = '123456'; // 应该通过后端获取，此处只作为示例
+                
+                // 显示加载动画
+                loadingSpinner.style.display = 'inline-block';
+                translateBtn.querySelector('span').textContent = '翻译中...';
+                translateBtn.querySelector('i').style.display = 'none';
+                
+                fetch(`https://translateapi.011102.xyz/?text=${encodeURIComponent(text)}&source_language=${source}&target_language=${target}&secret=${secret}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // 隐藏加载动画
+                        loadingSpinner.style.display = 'none';
+                        translateBtn.querySelector('span').textContent = '翻译';
+                        translateBtn.querySelector('i').style.display = 'inline-block';
+                        
+                        if (data.code === 0 && data.msg === 'ok') {
+                            outputText.value = data.text;
+                            const outLength = data.text.length;
+                            outputCount.textContent = `${outLength} 字符`;
+                            
+                            // 添加成功动画
+                            translateBtn.classList.add('success');
+                            setTimeout(() => {
+                                translateBtn.classList.remove('success');
+                            }, 1000);
+                        } else {
+                            alert('翻译失败：' + data.msg);
+                        }
+                    })
+                    .catch(error => {
+                        // 隐藏加载动画
+                        loadingSpinner.style.display = 'none';
+                        translateBtn.querySelector('span').textContent = '翻译';
+                        translateBtn.querySelector('i').style.display = 'inline-block';
+                        
+                        console.error('请求翻译API时发生错误：', error);
+                        alert('请求翻译API时发生错误，请稍后再试。');
+                    });
+            }
+
+            // 设置默认语言
+            // 基于浏览器语言自动设置源语言
+            const browserLang = navigator.language.split('-')[0];
+            if (browserLang) {
+                // 检查是否支持该语言
+                const options = Array.from(sourceLanguage.options).map(opt => opt.value);
+                if (options.includes(browserLang)) {
+                    sourceLanguage.value = browserLang;
+                    if (browserLang === targetLanguage.value) {
+                        // 如果和目标语言相同，则设置目标语言为英语或中文
+                        targetLanguage.value = browserLang === 'en' ? 'zh' : 'en';
+                    }
+                }
+            }
+        });
+    </script>
