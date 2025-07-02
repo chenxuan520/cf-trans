@@ -902,7 +902,7 @@
                 translateBtn.querySelector('span').textContent = '翻译中...';
                 translateBtn.querySelector('i').style.display = 'none';
                 
-                fetch(`https://${domain}/?text=${encodeURIComponent(text)}&source_language=${source}&target_language=${target}&secret=${secret}`)
+                fetch(`https://${domain}/api?text=${encodeURIComponent(text)}&source_language=${source}&target_language=${target}&secret=${secret}`)
                     .then(response => response.json())
                     .then(data => {
                         // 隐藏加载动画
